@@ -1,17 +1,15 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { site } from '$lib/config';
+	import type { ActionData } from './$types';
 
-	let name = $state('');
-	let email = $state('');
-	let message = $state('');
-	let submitted = $state(false);
+	let { form }: { form: ActionData } = $props();
 
-	// TODO: wire up to a real form service (e.g. Formspree, Resend, or a +page.server.ts action)
-	function handleSubmit(e: Event) {
-		e.preventDefault();
-		// Placeholder — replace with actual submission logic
-		submitted = true;
-	}
+	let submitting = $state(false);
+
+	// Repopulate fields with the values the server echoed back on error
+	const v = $derived(form && !form.success ? (form as { values?: Record<string, string> }).values ?? {} : {});
+	const errors = $derived(form && !form.success ? (form as { errors?: Record<string, string> }).errors ?? {} : {});
 </script>
 
 <svelte:head>
@@ -27,54 +25,96 @@
 		as I can.
 	</p>
 
-	{#if submitted}
+	{#if form?.success}
 		<div class="rounded-xl border border-green-200 bg-green-50 p-6 text-green-800">
 			<p class="font-medium">Thanks for reaching out!</p>
 			<p class="mt-1 text-sm">I'll be in touch soon.</p>
 		</div>
 	{:else}
-		<form onsubmit={handleSubmit} class="flex flex-col gap-5">
+		{#if errors.form}
+			<div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+				{errors.form}
+			</div>
+		{/if}
+
+		<form
+			method="POST"
+			use:enhance={() => {
+				submitting = true;
+				return async ({ update }) => {
+					await update();
+					submitting = false;
+				};
+			}}
+			class="flex flex-col gap-5"
+		>
+			<!-- Honeypot — hidden from real users, catches bots -->
+			<input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true"
+				class="hidden" />
+
 			<div class="flex flex-col gap-1.5">
 				<label for="name" class="text-sm font-medium text-gray-700">Name</label>
 				<input
 					id="name"
+					name="name"
 					type="text"
 					required
-					bind:value={name}
+					value={v.name ?? ''}
 					placeholder="Your name"
-					class="rounded-lg border border-gray-300 px-4 py-2.5 text-sm placeholder-gray-400 focus:border-gray-500 focus:outline-none"
+					class="rounded-lg border px-4 py-2.5 text-sm placeholder-gray-400 focus:outline-none
+						{errors.name
+							? 'border-red-400 focus:border-red-500'
+							: 'border-gray-300 focus:border-gray-500'}"
 				/>
+				{#if errors.name}
+					<p class="text-xs text-red-600">{errors.name}</p>
+				{/if}
 			</div>
 
 			<div class="flex flex-col gap-1.5">
 				<label for="email" class="text-sm font-medium text-gray-700">Email</label>
 				<input
 					id="email"
+					name="email"
 					type="email"
 					required
-					bind:value={email}
+					value={v.email ?? ''}
 					placeholder="you@example.com"
-					class="rounded-lg border border-gray-300 px-4 py-2.5 text-sm placeholder-gray-400 focus:border-gray-500 focus:outline-none"
+					class="rounded-lg border px-4 py-2.5 text-sm placeholder-gray-400 focus:outline-none
+						{errors.email
+							? 'border-red-400 focus:border-red-500'
+							: 'border-gray-300 focus:border-gray-500'}"
 				/>
+				{#if errors.email}
+					<p class="text-xs text-red-600">{errors.email}</p>
+				{/if}
 			</div>
 
 			<div class="flex flex-col gap-1.5">
 				<label for="message" class="text-sm font-medium text-gray-700">Message</label>
 				<textarea
 					id="message"
+					name="message"
 					required
 					rows="5"
-					bind:value={message}
 					placeholder="How can I help?"
-					class="rounded-lg border border-gray-300 px-4 py-2.5 text-sm placeholder-gray-400 focus:border-gray-500 focus:outline-none"
-				></textarea>
+					class="rounded-lg border px-4 py-2.5 text-sm placeholder-gray-400 focus:outline-none
+						{errors.message
+							? 'border-red-400 focus:border-red-500'
+							: 'border-gray-300 focus:border-gray-500'}"
+				>{v.message ?? ''}</textarea>
+				{#if errors.message}
+					<p class="text-xs text-red-600">{errors.message}</p>
+				{/if}
 			</div>
 
 			<button
 				type="submit"
-				class="self-start rounded-lg bg-gray-900 px-6 py-2.5 text-sm font-medium text-white hover:bg-gray-700"
+				disabled={submitting}
+				class="self-start rounded-lg bg-gray-900 px-6 py-2.5 text-sm font-medium text-white
+					hover:bg-gray-700 disabled:cursor-not-allowed disabled:opacity-60"
 			>
-				Send message
+				{submitting ? 'Sending…' : 'Send message'}
 			</button>
 		</form>
 	{/if}

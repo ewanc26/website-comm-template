@@ -2,48 +2,9 @@
 
 A SvelteKit + Tailwind CSS starter template for Ko-fi website commissions.
 
-## Quick-start checklist
+## Using this template
 
-For each new commission, work through these steps in order:
-
-1. **Clone and install**
-   ```sh
-   git clone git@github.com:ewanc26/website-comm-template.git my-client-site
-   cd my-client-site
-   pnpm install
-   ```
-
-2. **Configure the site** — open `src/lib/config.ts` and update:
-   - `site.name` — client's site / business name
-   - `site.tagline` — short homepage headline
-   - `site.author` — name for the footer copyright
-   - `site.socials` — fill in any links, leave others as `''`
-   - `navLinks` — add, remove, or rename pages as needed
-
-3. **Edit the pages**
-   - `src/routes/+page.svelte` — homepage hero + feature cards
-   - `src/routes/about/+page.svelte` — bio / background
-   - `src/routes/contact/+page.svelte` — contact form
-   - Add new pages by creating `src/routes/<page-name>/+page.svelte`
-
-4. **Wire up the contact form**  
-   The form is a client-side placeholder. Options:
-   - [Formspree](https://formspree.io) — drop in an `action` URL, no backend needed
-   - `+page.server.ts` action with [Resend](https://resend.com) for a fully custom flow
-
-5. **Preview**
-   ```sh
-   pnpm dev
-   ```
-
-6. **Build & deploy**
-   ```sh
-   pnpm build
-   ```
-   - Static hosting (Netlify, Vercel, Cloudflare Pages): works out of the box with `adapter-auto`
-   - For a specific target, swap the adapter in `svelte.config.js`
-
----
+For client setup instructions, see **[SETUP.md](./SETUP.md)**.
 
 ## Project structure
 
@@ -54,6 +15,7 @@ src/
       Nav.svelte      ← sticky top nav, mobile-responsive
       Footer.svelte   ← copyright + social links
     config.ts         ← ✏️  edit this first for every commission
+    email.ts          ← contact form email sender (swap provider here)
     index.ts
   routes/
     +layout.svelte    ← wraps all pages with Nav + Footer
@@ -75,8 +37,15 @@ static/               ← put images, fonts, etc. here
 ## Recreate from scratch
 
 ```sh
-pnpm dlx sv@0.12.5 create --template minimal --types ts \
+pnpm dlx sv@0.12.5 create --template minimal --types ts \  
   --add prettier tailwindcss="plugins:typography,forms" \
   sveltekit-adapter="adapter:auto" \
   --install pnpm ./
 ```
+
+## Licence
+
+Copyright © Ewan Croft (<https://ewancroft.uk>)  
+Licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
+
+You are free to use, adapt, and redistribute this template — including for commercial commissions — provided you give appropriate credit to Ewan Croft, link to the licence, and distribute any derivative work under the same licence. The attribution notice in `Footer.svelte` satisfies this requirement for deployed sites.

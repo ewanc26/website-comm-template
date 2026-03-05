@@ -7,11 +7,33 @@
 </script>
 
 <footer class="mt-auto border-t border-gray-200 bg-gray-50">
-	<div class="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 py-8 sm:flex-row sm:justify-between">
-		<p class="text-sm text-gray-500">
-			© {year}
-			{site.author}. All rights reserved.
-		</p>
+	<div class="mx-auto max-w-5xl px-6 py-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+		<div class="flex flex-col gap-1">
+			<p class="text-sm text-gray-500">
+				© {year} {site.author}. All rights reserved.
+			</p>
+			<!-- CC BY-SA 4.0 attribution — required by the template licence -->
+			<p class="text-xs text-gray-400">
+				Built from a template by
+				<a
+					href="https://ewancroft.uk"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="underline hover:text-gray-600"
+				>
+					Ewan Croft
+				</a>
+				— licensed under
+				<a
+					href="https://creativecommons.org/licenses/by-sa/4.0/"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="underline hover:text-gray-600"
+				>
+					CC BY-SA 4.0
+				</a>
+			</p>
+		</div>
 
 		{#if socials.length}
 			<ul class="flex gap-4">
