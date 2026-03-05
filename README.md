@@ -8,7 +8,7 @@ For each new commission, work through these steps in order:
 
 1. **Clone and install**
    ```sh
-   git clone https://github.com/your-username/website-comm-template my-client-site
+   git clone git@github.com:ewanc26/website-comm-template.git my-client-site
    cd my-client-site
    pnpm install
    ```
