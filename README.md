@@ -2,6 +2,8 @@
 
 A SvelteKit + Tailwind CSS starter template for Ko-fi website commissions.
 
+![Light mode preview](meta/index-light.png) ![Dark mode preview](meta/index-dark.png)
+
 ## Using this template
 
 For client setup instructions, see **[SETUP.md](./SETUP.md)**.
