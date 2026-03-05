@@ -11,7 +11,7 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<div class="flex min-h-screen flex-col">
+<div class="flex min-h-screen flex-col bg-white dark:bg-gray-950">
 	<Nav />
 	<main class="flex-1">
 		{@render children()}
