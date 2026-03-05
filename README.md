@@ -45,6 +45,10 @@ pnpm dlx sv@0.12.5 create --template minimal --types ts \
   --install pnpm ./
 ```
 
+## ☕ Support
+
+If you found this useful, consider [buying me a ko-fi](https://ko-fi.com/ewancroft)!
+
 ## Licence
 
 Copyright © Ewan Croft (<https://ewancroft.uk>)  
