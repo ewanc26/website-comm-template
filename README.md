@@ -4,6 +4,8 @@ A SvelteKit + Tailwind CSS starter template for Ko-fi website commissions.
 
 ![Light mode preview](meta/index-light.png) ![Dark mode preview](meta/index-dark.png)
 
+> 🧶 Also available on [Tangled](https://tangled.org/ewancroft.uk/website-comm-template)
+
 ## Using this template
 
 For client setup instructions, see **[SETUP.md](./SETUP.md)**.
@@ -39,7 +41,7 @@ static/               ← put images, fonts, etc. here
 ## Recreate from scratch
 
 ```sh
-pnpm dlx sv@0.12.5 create --template minimal --types ts \  
+pnpm dlx sv@0.12.5 create --template minimal --types ts \
   --add prettier tailwindcss="plugins:typography,forms" \
   sveltekit-adapter="adapter:auto" \
   --install pnpm ./
