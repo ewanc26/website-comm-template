@@ -1,3 +1,9 @@
+<!-- ─── Component: Footer ───────────────────────────────────
+     Site-wide footer — copyright line, CC BY-SA 4.0
+     attribution (required by the template licence), and
+     social links from site config. Sticky to the bottom of
+     the viewport via the parent layout's mt-auto. -->
+
 <script lang="ts">
 	import { site } from '$lib/config';
 

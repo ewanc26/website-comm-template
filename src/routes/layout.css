@@ -1,6 +1,14 @@
+/* ── Module: global styles & design tokens ──────────────── */
+/* Tailwind v4 entry point. Extends the default theme with
+   semantic colour aliases that map to CSS custom properties,
+   enabling a light/dark switch without Tailwind layer hacks.
+   Update the CSS variable values below to rebrand. */
+
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+/* ── Theme tokens ───────────────────────────────────────── */
 
 @theme {
 	--color-surface:        var(--surface);
@@ -14,6 +22,8 @@
 	--color-primary-fg:     var(--primary-fg);
 }
 
+/* ── Light palette ──────────────────────────────────────── */
+
 :root {
 	--surface:        var(--color-white);
 	--surface-raised: var(--color-gray-50);
@@ -25,6 +35,8 @@
 	--primary-hover:  var(--color-gray-700);
 	--primary-fg:     var(--color-white);
 }
+
+/* ── Dark palette ─────────────────────────────────────────── */
 
 @media (prefers-color-scheme: dark) {
 	:root {

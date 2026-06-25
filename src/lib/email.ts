@@ -1,3 +1,8 @@
+// ─── Module: contact email sender ─────────────────────────
+// Encapsulates the email-provider integration behind a single
+// function. To swap providers, replace the Resend block below;
+// the calling code (contact form action) never needs changing.
+
 import { Resend } from 'resend';
 import { RESEND_API_KEY } from '$env/static/private';
 import { site } from '$lib/config';

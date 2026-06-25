@@ -1,3 +1,8 @@
+# ── pre-commit: auto-format with Prettier ──────────────────
+# Runs "pnpm exec prettier --write" on staged files matching
+# the configured types. Uses the project-local Prettier
+# version (via pnpm), not a globally installed one.
+
 repos:
   - repo: local
     hooks:

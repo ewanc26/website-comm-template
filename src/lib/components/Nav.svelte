@@ -1,3 +1,9 @@
+<!-- ─── Component: Nav ──────────────────────────────────────
+     Sticky top navigation bar with desktop link row and
+     mobile hamburger menu. Active route is highlighted via
+     SvelteKit's $page state. Backdrop blur applied on scroll
+     for visual depth on longer pages. -->
+
 <script lang="ts">
 	import { site, navLinks } from '$lib/config';
 	import { page } from '$app/state';

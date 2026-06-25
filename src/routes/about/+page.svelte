@@ -1,3 +1,9 @@
+<!-- ─── Route: /about ──────────────────────────────────────
+     Static about page. Content is placeholder text that the
+     commissioner fills in. Uses the @tailwindcss/typography
+     prose class for automatic content formatting — headings,
+     lists, images, and links all style themselves. -->
+
 <script lang="ts">
 	import { site } from '$lib/config';
 </script>

@@ -1,3 +1,9 @@
+// ─── Route: contact form action ───────────────────────────
+// Server-side handler for the /contact page. Validates input,
+// rate-limits by IP, sends the email, and returns structured
+// error responses that the client-side form uses for inline
+// feedback. Runs only on the server (never in the browser).
+
 import { fail } from '@sveltejs/kit';
 import { sendContactEmail } from '$lib/email';
 import type { Actions } from './$types';

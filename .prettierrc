@@ -1,3 +1,9 @@
+// ── Prettier config ────────────────────────────────────────
+// Tabs for indentation (lean toward accessibility), single
+// quotes, no trailing commas. The tailwindStylesheet path
+// lets prettier-plugin-tailwindcss read your custom tokens
+// so it sorts utility classes correctly.
+
 {
 	"useTabs": true,
 	"singleQuote": true,

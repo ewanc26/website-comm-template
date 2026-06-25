@@ -1,6 +1,10 @@
 {
+  # ─── Nix flake: dev shell for local development ──────────
+  # Provides Node.js 22 and pnpm with the correct version.
+  # Also configures nixfmt as the project formatter.
   description = "website-comm-template — SvelteKit community template";
 
+  # Track nixos-25.11 for a stable Node.js 22 + pnpm pairing
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 
   outputs = { self, nixpkgs }:

@@ -1,7 +1,7 @@
-// ============================================================
-//  Site Configuration
-//  Edit this file to customise the site for each commission.
-// ============================================================
+// ─── Module: site.config ──────────────────────────────────
+// Central configuration object — edit this file for every
+// commission. Feeds the nav header, homepage hero, footer
+// copyright, social links, and contact-form envelope.
 
 export const site = {
 	/** Displayed in the browser tab, nav logo, and footer */

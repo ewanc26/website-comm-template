@@ -1,3 +1,8 @@
+// ─── SvelteKit config ────────────────────────────────────
+// Uses adapter-auto by default (works on Vercel, Netlify,
+// Cloudflare Pages, etc.). Swap to adapter-node or
+// adapter-static when deploying to a specific target.
+
 import adapter from '@sveltejs/adapter-auto';
 
 /** @type {import('@sveltejs/kit').Config} */

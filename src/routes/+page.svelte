@@ -1,3 +1,9 @@
+<!-- ─── Route: / (Homepage) ────────────────────────────────
+     Hero section with site tagline, CTA buttons, and a
+     feature-highlight grid below. The tagline and feature
+     text come from config.ts; the grid is a placeholder
+     the commissioner edits per use case. -->
+
 <script lang="ts">
 	import { site } from '$lib/config';
 </script>

@@ -1,3 +1,10 @@
+<!-- ─── Route: /contact ─────────────────────────────────────
+     Progressive-enhancement contact form. Uses SvelteKit's
+     use:enhance to submit without a full page reload.
+     Server errors (validation, rate-limit, send failure) are
+     echoed back per-field. A honeypot field catches bots;
+     legitimate users never see it. -->
+
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { site } from '$lib/config';
