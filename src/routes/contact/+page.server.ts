@@ -5,21 +5,46 @@
 // feedback. Runs only on the server (never in the browser).
 
 import { fail } from '@sveltejs/kit';
-import { sendContactEmail } from '$lib/email';
+import { sendContactEmail, ContactConfigError } from '$lib/email';
 import type { Actions } from './$types';
 
 // Simple in-memory rate limiter: max 3 submissions per IP per 10 minutes.
-// For multi-instance deployments, swap this for a Redis-backed store.
+// This is a low-cost speed bump, NOT production-grade abuse protection: it is
+// per-process, resets on cold start, and is ineffective across serverless
+// instances. For multi-instance deployments, swap it for a shared store.
 const submissions = new Map<string, number[]>();
 const WINDOW_MS = 10 * 60 * 1000; // 10 minutes
 const MAX_PER_WINDOW = 3;
+const MAX_TRACKED_IPS = 10_000;
+
+/** Drop entries whose window has fully elapsed, so the map cannot grow forever. */
+function pruneSubmissions(now: number): void {
+	for (const [key, times] of submissions) {
+		if (times.every((t) => now - t >= WINDOW_MS)) submissions.delete(key);
+	}
+
+	// Hard ceiling in case of a flood of unique addresses within one window.
+	if (submissions.size > MAX_TRACKED_IPS) submissions.clear();
+}
 
 function isRateLimited(ip: string): boolean {
 	const now = Date.now();
+	pruneSubmissions(now);
+
 	const times = (submissions.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
 	if (times.length >= MAX_PER_WINDOW) return true;
 	submissions.set(ip, [...times, now]);
 	return false;
+}
+
+/**
+ * Strip control characters (notably CR/LF) from a single-line field.
+ *
+ * These values end up in email headers, where an un-normalised newline would
+ * allow header injection.
+ */
+function normaliseLine(value: string): string {
+	return value.replace(/[\u0000-\u001F\u007F]+/g, ' ').trim();
 }
 
 export const actions: Actions = {
@@ -32,9 +57,12 @@ export const actions: Actions = {
 			return { success: true };
 		}
 
-		const name = (data.get('name') ?? '').toString().trim();
-		const email = (data.get('email') ?? '').toString().trim();
-		const message = (data.get('message') ?? '').toString().trim();
+		// Single-line fields are stripped of control characters before they are
+		// validated or placed in a mail header. The message body keeps its
+		// newlines but has stray carriage returns normalised.
+		const name = normaliseLine((data.get('name') ?? '').toString());
+		const email = normaliseLine((data.get('email') ?? '').toString());
+		const message = (data.get('message') ?? '').toString().replace(/\r\n?/g, '\n').trim();
 
 		// --- Validation ---
 		const errors: Record<string, string> = {};
@@ -43,7 +71,8 @@ export const actions: Actions = {
 		else if (name.length > 100) errors.name = 'Name must be 100 characters or fewer.';
 
 		if (!email) errors.email = 'Please enter your email address.';
-		else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = 'Please enter a valid email address.';
+		else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+			errors.email = 'Please enter a valid email address.';
 
 		if (!message) errors.message = 'Please enter a message.';
 		else if (message.length < 10) errors.message = 'Message must be at least 10 characters.';
@@ -66,7 +95,14 @@ export const actions: Actions = {
 		try {
 			await sendContactEmail({ name, email, message });
 		} catch (err) {
-			console.error('[contact] email send failed:', err);
+			// Misconfiguration is an operator problem, so make it loud in the
+			// server log — but never reveal config details to the client.
+			if (err instanceof ContactConfigError) {
+				console.error(`[contact] misconfigured: ${err.message}`);
+			} else {
+				console.error('[contact] email send failed:', err);
+			}
+
 			return fail(500, {
 				errors: { form: 'Something went wrong sending your message. Please try again later.' },
 				values: { name, email, message }
