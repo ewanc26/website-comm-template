@@ -1,22 +1,22 @@
-// ── Prettier config ────────────────────────────────────────
-// Tabs for indentation (lean toward accessibility), single
-// quotes, no trailing commas. The tailwindStylesheet path
-// lets prettier-plugin-tailwindcss read your custom tokens
-// so it sorts utility classes correctly.
+# ── Prettier config ────────────────────────────────────────
+# Tabs for indentation (lean toward accessibility), single
+# quotes, no trailing commas. The tailwindStylesheet path
+# lets prettier-plugin-tailwindcss read your custom tokens
+# so it sorts utility classes correctly.
+#
+# Written as YAML so these comments are valid: an extensionless
+# .prettierrc is parsed as JSON or YAML, and JSON has no comment
+# syntax.
 
-{
-	"useTabs": true,
-	"singleQuote": true,
-	"trailingComma": "none",
-	"printWidth": 100,
-	"plugins": ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"],
-	"overrides": [
-		{
-			"files": "*.svelte",
-			"options": {
-				"parser": "svelte"
-			}
-		}
-	],
-	"tailwindStylesheet": "./src/routes/layout.css"
-}
+useTabs: true
+singleQuote: true
+trailingComma: none
+printWidth: 100
+plugins:
+  - prettier-plugin-svelte
+  - prettier-plugin-tailwindcss
+overrides:
+  - files: '*.svelte'
+    options:
+      parser: svelte
+tailwindStylesheet: './src/routes/layout.css'
