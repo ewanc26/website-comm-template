@@ -10,6 +10,13 @@ export const site = {
 	/** Short tagline shown on the homepage hero */
 	tagline: 'A short description of what this site is about.',
 
+	/**
+	 * Canonical origin, no trailing slash. Used for the sitemap and the
+	 * Sitemap line in robots.txt, both of which require absolute URLs.
+	 * Override via the PUBLIC_SITE_URL environment variable in production.
+	 */
+	url: 'https://example.com',
+
 	/** Footer copyright name */
 	author: 'Your Name',
 

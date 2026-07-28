@@ -5,6 +5,7 @@ This file walks you through configuring and deploying your site.
 ## Quick-start checklist
 
 1. **Install dependencies**
+
    ```sh
    pnpm install
    ```
@@ -12,9 +13,14 @@ This file walks you through configuring and deploying your site.
 2. **Configure the site** — open `src/lib/config.ts` and update:
    - `site.name` — your site / business name
    - `site.tagline` — short homepage headline
+   - `site.url` — the live domain, no trailing slash. `sitemap.xml` and
+     `robots.txt` are generated from it, so leaving it as `https://example.com`
+     ships a sitemap pointing at the wrong host. Can also be set per-deployment
+     with the `PUBLIC_SITE_URL` environment variable.
    - `site.author` — name for the footer copyright
    - `site.socials` — fill in any links, leave others as `''`
-   - `navLinks` — add, remove, or rename pages as needed
+   - `navLinks` — add, remove, or rename pages as needed (the sitemap is
+     generated from this list)
 
 3. **Edit the pages**
    - `src/routes/+page.svelte` — homepage hero + feature cards
@@ -25,6 +31,7 @@ This file walks you through configuring and deploying your site.
 4. **Wire up the contact form** — see [Contact form setup](#contact-form-setup) below
 
 5. **Preview**
+
    ```sh
    pnpm dev
    ```
@@ -33,7 +40,7 @@ This file walks you through configuring and deploying your site.
    ```sh
    pnpm build
    ```
-   Static hosting (Netlify, Vercel, Cloudflare Pages) works out of the box with `adapter-auto`. For a specific target, swap the adapter in `svelte.config.js`.
+   `adapter-auto` detects Netlify, Vercel and Cloudflare Pages and builds a server (SSR) deployment for them, which is what the contact form's server action needs. For a specific target — or for a genuinely static export, which cannot run the contact action — swap the adapter in `svelte.config.js`.
 
 ---
 
@@ -53,7 +60,7 @@ In the Resend dashboard go to **Domains → Add domain** and follow the DNS inst
 
 ### 3. Create an API key
 
-In the Resend dashboard go to **API Keys → Create API key**. Give it *Sending access* only.
+In the Resend dashboard go to **API Keys → Create API key**. Give it _Sending access_ only.
 
 ### 4. Configure environment variables
 
@@ -98,7 +105,9 @@ import nodemailer from 'nodemailer';
 import { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } from '$env/static/private';
 
 const transporter = nodemailer.createTransport({
-  host: SMTP_HOST, port: Number(SMTP_PORT), auth: { user: SMTP_USER, pass: SMTP_PASS }
+	host: SMTP_HOST,
+	port: Number(SMTP_PORT),
+	auth: { user: SMTP_USER, pass: SMTP_PASS }
 });
 await transporter.sendMail({ from, to, replyTo: payload.email, subject, text });
 ```
@@ -112,6 +121,7 @@ await transporter.sendMail({ from, to, replyTo: payload.email, subject, text });
 This section covers buying a domain and deploying your site through [Hostinger](https://www.hostinger.com). Three deployment paths are available depending on your plan.
 
 > **Which path to pick?**
+>
 > - **Business / Cloud hosting** — recommended. Hostinger's hPanel has a built-in Node.js Apps feature that handles builds, deploys, and SSL for you. The contact form works without any changes. Requires a **Business**, Cloud Startup, Cloud Professional, or Cloud Enterprise plan.
 > - **VPS hosting** — full root access; set up the server yourself. More effort but maximum control. The contact form works without changes.
 > - **Starter / Premium shared hosting** — cheapest option; Node.js is not supported. Must export a static site, which means the contact form will not work server-side.
@@ -145,7 +155,7 @@ pnpm add -D @sveltejs/adapter-node
 import adapter from '@sveltejs/adapter-node';
 
 export default {
-  kit: { adapter: adapter() }
+	kit: { adapter: adapter() }
 };
 ```
 
@@ -271,10 +281,10 @@ Then restart: `pm2 restart mysite`.
 
 In hPanel go to **Domains → DNS / Nameservers** and set:
 
-| Type | Name | Value |
-|------|------|-------|
-| A | `@` | `<your-vps-ip>` |
-| A | `www` | `<your-vps-ip>` |
+| Type | Name  | Value           |
+| ---- | ----- | --------------- |
+| A    | `@`   | `<your-vps-ip>` |
+| A    | `www` | `<your-vps-ip>` |
 
 Changes propagate within minutes to a few hours.
 
@@ -349,9 +359,9 @@ pnpm add -D @sveltejs/adapter-static
 import adapter from '@sveltejs/adapter-static';
 
 export default {
-  kit: {
-    adapter: adapter({ fallback: '404.html' })
-  }
+	kit: {
+		adapter: adapter({ fallback: '404.html' })
+	}
 };
 ```
 
@@ -376,12 +386,13 @@ Visit your domain — the site should be live immediately.
 
 ## How the contact form works
 
-| File | Role |
-|---|---|
-| `src/lib/email.ts` | Email sender; swap the provider block here |
-| `src/routes/contact/+page.server.ts` | Form action: validates input, rate-limits by IP, calls `sendContactEmail` |
-| `src/routes/contact/+page.svelte` | Progressive-enhancement form; shows per-field errors echoed from the server |
+| File                                 | Role                                                                        |
+| ------------------------------------ | --------------------------------------------------------------------------- |
+| `src/lib/email.ts`                   | Email sender; swap the provider block here                                  |
+| `src/routes/contact/+page.server.ts` | Form action: validates input, rate-limits by IP, calls `sendContactEmail`   |
+| `src/routes/contact/+page.svelte`    | Progressive-enhancement form; shows per-field errors echoed from the server |
 
 The form also includes:
+
 - **Honeypot field** — a hidden `_hp` input that bots fill in but browsers hide from real users; submissions with it populated are silently discarded.
 - **In-memory rate limiter** — max 3 submissions per IP per 10 minutes. For multi-instance deployments (e.g. serverless) replace with a Redis-backed store.
