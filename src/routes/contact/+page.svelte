@@ -15,12 +15,19 @@
 	let submitting = $state(false);
 
 	// Repopulate fields with the values the server echoed back on error
-	const v = $derived(form && !form.success ? (form as { values?: Record<string, string> }).values ?? {} : {});
-	const errors = $derived(form && !form.success ? (form as { errors?: Record<string, string> }).errors ?? {} : {});
+	const v = $derived(
+		form && !form.success ? ((form as { values?: Record<string, string> }).values ?? {}) : {}
+	);
+	const errors = $derived(
+		form && !form.success ? ((form as { errors?: Record<string, string> }).errors ?? {}) : {}
+	);
 
-	const inputBase = 'rounded-lg border bg-surface px-4 py-2.5 text-sm text-text placeholder-text-subtle focus:outline-none';
-	const inputOk   = 'border-border focus:border-text-muted';
-	const inputErr  = 'border-red-400 focus:border-red-500';
+	// A visible focus ring replaces the removed default outline — border colour
+	// alone is not a sufficient focus indicator.
+	const inputBase =
+		'rounded-lg border bg-surface px-4 py-2.5 text-sm text-text placeholder-text-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface';
+	const inputOk = 'border-border focus:border-text-muted';
+	const inputErr = 'border-red-400 focus:border-red-500';
 </script>
 
 <svelte:head>
@@ -37,13 +44,20 @@
 	</p>
 
 	{#if form?.success}
-		<div class="rounded-xl border border-green-200 bg-green-50 p-6 text-green-800 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
+		<div
+			role="status"
+			aria-live="polite"
+			class="rounded-xl border border-green-200 bg-green-50 p-6 text-green-800 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
+		>
 			<p class="font-medium">Thanks for reaching out!</p>
 			<p class="mt-1 text-sm">I'll be in touch soon.</p>
 		</div>
 	{:else}
 		{#if errors.form}
-			<div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-400">
+			<div
+				role="alert"
+				class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-400"
+			>
 				{errors.form}
 			</div>
 		{/if}
@@ -60,41 +74,67 @@
 			class="flex flex-col gap-5"
 		>
 			<!-- Honeypot — hidden from real users, catches bots -->
-			<input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" class="hidden" />
+			<input
+				type="text"
+				name="_hp"
+				tabindex="-1"
+				autocomplete="off"
+				aria-hidden="true"
+				class="hidden"
+			/>
 
 			<div class="flex flex-col gap-1.5">
 				<label for="name" class="text-sm font-medium text-text-muted">Name</label>
 				<input
-					id="name" name="name" type="text" required
-					value={v.name ?? ''} placeholder="Your name"
+					id="name"
+					name="name"
+					type="text"
+					required
+					autocomplete="name"
+					value={v.name ?? ''}
+					placeholder="Your name"
+					aria-invalid={errors.name ? 'true' : undefined}
+					aria-describedby={errors.name ? 'name-error' : undefined}
 					class="{inputBase} {errors.name ? inputErr : inputOk}"
 				/>
 				{#if errors.name}
-					<p class="text-xs text-red-600 dark:text-red-400">{errors.name}</p>
+					<p id="name-error" class="text-xs text-red-600 dark:text-red-400">{errors.name}</p>
 				{/if}
 			</div>
 
 			<div class="flex flex-col gap-1.5">
 				<label for="email" class="text-sm font-medium text-text-muted">Email</label>
 				<input
-					id="email" name="email" type="email" required
-					value={v.email ?? ''} placeholder="you@example.com"
+					id="email"
+					name="email"
+					type="email"
+					required
+					autocomplete="email"
+					value={v.email ?? ''}
+					placeholder="you@example.com"
+					aria-invalid={errors.email ? 'true' : undefined}
+					aria-describedby={errors.email ? 'email-error' : undefined}
 					class="{inputBase} {errors.email ? inputErr : inputOk}"
 				/>
 				{#if errors.email}
-					<p class="text-xs text-red-600 dark:text-red-400">{errors.email}</p>
+					<p id="email-error" class="text-xs text-red-600 dark:text-red-400">{errors.email}</p>
 				{/if}
 			</div>
 
 			<div class="flex flex-col gap-1.5">
 				<label for="message" class="text-sm font-medium text-text-muted">Message</label>
 				<textarea
-					id="message" name="message" required rows="5"
+					id="message"
+					name="message"
+					required
+					rows="5"
 					placeholder="How can I help?"
-					class="{inputBase} {errors.message ? inputErr : inputOk}"
-				>{v.message ?? ''}</textarea>
+					aria-invalid={errors.message ? 'true' : undefined}
+					aria-describedby={errors.message ? 'message-error' : undefined}
+					class="{inputBase} {errors.message ? inputErr : inputOk}">{v.message ?? ''}</textarea
+				>
 				{#if errors.message}
-					<p class="text-xs text-red-600 dark:text-red-400">{errors.message}</p>
+					<p id="message-error" class="text-xs text-red-600 dark:text-red-400">{errors.message}</p>
 				{/if}
 			</div>
 
