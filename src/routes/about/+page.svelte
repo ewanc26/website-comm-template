@@ -13,7 +13,7 @@
 	<meta name="description" content="Learn more about {site.name}." />
 </svelte:head>
 
-<article class="prose prose-gray mx-auto max-w-2xl px-6 py-20 dark:prose-invert">
+<article class="mx-auto prose max-w-2xl px-6 py-20 prose-gray dark:prose-invert">
 	<h1>About</h1>
 
 	<!-- TODO: replace the placeholder content below -->
