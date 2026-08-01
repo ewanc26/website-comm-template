@@ -47,9 +47,12 @@ pnpm dlx sv@0.12.5 create --template minimal --types ts \
   --install pnpm ./
 ```
 
-## ☕ Support
+## Support
 
-If you found this useful, consider [buying me a ko-fi](https://ko-fi.com/ewancroft)!
+If you find this project useful, consider supporting its development:
+
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/ewancroft)
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub%20Sponsors-30363D?style=for-the-badge&logo=github&logoColor=white)](https://github.com/sponsors/ewanc26)
 
 ## Licence
 
