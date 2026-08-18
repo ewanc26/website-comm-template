@@ -84,6 +84,26 @@
 						</a>
 					</li>
 				{/each}
+				<li>
+					<a
+						href="https://ko-fi.com/ewancroft"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-sm text-text-muted capitalize hover:text-text"
+					>
+						Ko-fi
+					</a>
+				</li>
+				<li>
+					<a
+						href="https://github.com/sponsors/ewanc26"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-sm text-text-muted capitalize hover:text-text"
+					>
+						GitHub Sponsors
+					</a>
+				</li>
 			</ul>
 		{/if}
 	</div>
