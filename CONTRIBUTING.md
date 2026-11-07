@@ -16,4 +16,4 @@ A SvelteKit + TailwindCSS commission website template.
 
 ## Recent direction
 
-Recent commits: Sync AGENTS.md from zincfox; Sync AGENTS.md from zincfox; Sync CONTRIBUTING.md from zincfox; Sync CONTRIBUTING.md from zincfox; Symlink droid/opencode/qwen/rovodev skill dirs to .agents/skills
+Recent commits: Symlink droid/opencode/qwen/rovodev skill dirs to .agents/skills
