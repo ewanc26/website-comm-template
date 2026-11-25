@@ -23,6 +23,7 @@ A SvelteKit + TailwindCSS commission website template.
 Symlink droid/opencode/qwen/rovodev skill dirs to .agents/skills
 
 <!-- allowed-agents -->
+
 ## Allowed agents
 
 Only **Claude** (Anthropic) and **Mistral** (Mistral AI) may be used as coding agents in this repository. This rule supersedes any earlier agent-attribution guidance in this file.
