@@ -5,7 +5,7 @@
      for visual depth on longer pages. -->
 
 <script lang="ts">
-	import { site, navLinks } from '$lib/config';
+	import { site, navLinks } from '#lib/config.ts';
 	import { page } from '$app/state';
 
 	let menuOpen = $state(false);

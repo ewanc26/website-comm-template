@@ -4,8 +4,8 @@
 // the calling code (contact form action) never needs changing.
 
 import { Resend } from 'resend';
-import { env } from '$env/dynamic/private';
-import { site } from '$lib/config';
+import { RESEND_API_KEY, CONTACT_EMAIL_TO, CONTACT_EMAIL_FROM } from '$app/env/private';
+import { site } from '#lib/config.ts';
 
 export interface ContactPayload {
 	name: string;
@@ -51,9 +51,9 @@ function sanitiseHeaderValue(value: string): string {
  * @throws ContactConfigError if the API key or envelope is missing/placeholder
  */
 export async function sendContactEmail(payload: ContactPayload): Promise<void> {
-	const apiKey = env.RESEND_API_KEY;
-	const to = env.CONTACT_EMAIL_TO || site.contactEmailTo;
-	const from = env.CONTACT_EMAIL_FROM || site.contactEmailFrom;
+	const apiKey = RESEND_API_KEY;
+	const to = CONTACT_EMAIL_TO || site.contactEmailTo;
+	const from = CONTACT_EMAIL_FROM || site.contactEmailFrom;
 
 	// Fail loudly during setup rather than silently dropping a real enquiry.
 	if (!apiKey || PLACEHOLDERS.has(apiKey)) {

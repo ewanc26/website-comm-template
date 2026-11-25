@@ -5,7 +5,7 @@
      the viewport via the parent layout's mt-auto. -->
 
 <script lang="ts">
-	import { site } from '$lib/config';
+	import { site } from '#lib/config.ts';
 
 	const year = new Date().getFullYear();
 

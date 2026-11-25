@@ -5,10 +5,10 @@
      short pages. Favicon is injected once here via <svelte:head>. -->
 
 <script lang="ts">
-	import Nav from '$lib/components/Nav.svelte';
-	import Footer from '$lib/components/Footer.svelte';
+	import Nav from '#lib/components/Nav.svelte';
+	import Footer from '#lib/components/Footer.svelte';
 	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
+	import favicon from '#lib/assets/favicon.svg';
 
 	let { children } = $props();
 </script>

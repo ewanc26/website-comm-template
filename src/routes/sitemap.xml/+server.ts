@@ -3,8 +3,8 @@
 // set is small and fixed, so it is derived from navLinks rather
 // than crawled; adding a page to the nav adds it to the sitemap.
 
-import { navLinks } from '$lib/config';
-import { siteUrl } from '$lib/siteUrl';
+import { navLinks } from '#lib/config.ts';
+import { siteUrl } from '#lib/siteUrl.ts';
 import type { RequestHandler } from './$types';
 
 /** Escape the five XML predefined entities. */
