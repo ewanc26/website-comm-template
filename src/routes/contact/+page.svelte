@@ -7,7 +7,7 @@
 
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { site } from '$lib/config';
+	import { site } from '#lib/config.ts';
 	import type { ActionData } from './$types';
 
 	let { form }: { form: ActionData } = $props();

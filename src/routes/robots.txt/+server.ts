@@ -3,7 +3,7 @@
 // can carry the absolute URL of whatever domain the commission
 // is deployed to, instead of a hardcoded one.
 
-import { siteUrl } from '$lib/siteUrl';
+import { siteUrl } from '#lib/siteUrl.ts';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = ({ url }) => {

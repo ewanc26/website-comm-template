@@ -5,7 +5,7 @@
 // feedback. Runs only on the server (never in the browser).
 
 import { fail } from '@sveltejs/kit';
-import { sendContactEmail, ContactConfigError } from '$lib/email';
+import { sendContactEmail, ContactConfigError } from '#lib/email.ts';
 import type { Actions } from './$types';
 
 // Simple in-memory rate limiter: max 3 submissions per IP per 10 minutes.
