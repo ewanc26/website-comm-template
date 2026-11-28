@@ -40,7 +40,7 @@ This file walks you through configuring and deploying your site.
    ```sh
    pnpm build
    ```
-   `adapter-auto` detects Netlify, Vercel and Cloudflare Pages and builds a server (SSR) deployment for them, which is what the contact form's server action needs. For a specific target — or for a genuinely static export, which cannot run the contact action — swap the adapter in `svelte.config.js`.
+   `adapter-auto` detects Netlify, Vercel and Cloudflare Pages and builds a server (SSR) deployment for them, which is what the contact form's server action needs. For a specific target — or for a genuinely static export, which cannot run the contact action — swap the adapter in `vite.config.ts`.
 
 ---
 
@@ -56,7 +56,7 @@ Sign up at <https://resend.com>.
 
 In the Resend dashboard go to **Domains → Add domain** and follow the DNS instructions for your domain. Until a custom domain is verified you can send from `onboarding@resend.dev` for testing only — it cannot deliver to arbitrary addresses.
 
-> **Shared-hosting tip:** if your platform doesn't support server-side rendering (e.g. plain GitHub Pages), switch `svelte.config.js` to `adapter-static` and replace the form with a third-party service like [Formspree](https://formspree.io).
+> **Shared-hosting tip:** if your platform doesn't support server-side rendering (e.g. plain GitHub Pages), switch `vite.config.ts` to `adapter-static` and replace the form with a third-party service like [Formspree](https://formspree.io).
 
 ### 3. Create an API key
 
@@ -102,7 +102,8 @@ Open `src/lib/email.ts` and replace the Resend block with whatever SDK you need.
 ```ts
 // example: Nodemailer over SMTP
 import nodemailer from 'nodemailer';
-import { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } from '$env/static/private';
+// declare each variable in src/env.ts first
+import { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } from '$app/env/private';
 
 const transporter = nodemailer.createTransport({
 	host: SMTP_HOST,
@@ -150,13 +151,16 @@ This is the simplest production path. Hostinger builds and runs the app for you 
 pnpm add -D @sveltejs/adapter-node
 ```
 
-```js
-// svelte.config.js
+```ts
+// vite.config.ts
 import adapter from '@sveltejs/adapter-node';
+import tailwindcss from '@tailwindcss/vite';
+import { sveltekit } from '@sveltejs/kit/vite';
+import { defineConfig } from 'vite';
 
-export default {
-	kit: { adapter: adapter() }
-};
+export default defineConfig({
+	plugins: [tailwindcss(), sveltekit({ adapter: adapter() })]
+});
 ```
 
 Push these changes to a GitHub repository.
@@ -237,7 +241,7 @@ If you haven't already (see 2a above), swap in `adapter-node`:
 pnpm add -D @sveltejs/adapter-node
 ```
 
-Update `svelte.config.js` as shown in 2a, then build locally:
+Update `vite.config.ts` as shown in 2a, then build locally:
 
 ```sh
 pnpm build
@@ -354,15 +358,16 @@ systemctl restart caddy
 pnpm add -D @sveltejs/adapter-static
 ```
 
-```js
-// svelte.config.js
+```ts
+// vite.config.ts
 import adapter from '@sveltejs/adapter-static';
+import tailwindcss from '@tailwindcss/vite';
+import { sveltekit } from '@sveltejs/kit/vite';
+import { defineConfig } from 'vite';
 
-export default {
-	kit: {
-		adapter: adapter({ fallback: '404.html' })
-	}
-};
+export default defineConfig({
+	plugins: [tailwindcss(), sveltekit({ adapter: adapter({ fallback: '404.html' }) })]
+});
 ```
 
 Add a root layout option so SvelteKit prerenders all pages:

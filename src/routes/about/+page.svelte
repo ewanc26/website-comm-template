@@ -5,7 +5,7 @@
      lists, images, and links all style themselves. -->
 
 <script lang="ts">
-	import { site } from '$lib/config';
+	import { site } from '#lib/config.ts';
 </script>
 
 <svelte:head>

@@ -5,7 +5,7 @@
      the commissioner edits per use case. -->
 
 <script lang="ts">
-	import { site } from '$lib/config';
+	import { site } from '#lib/config.ts';
 </script>
 
 <svelte:head>
